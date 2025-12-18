@@ -3,12 +3,20 @@ import { SignUpDto } from './dto/create-auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+
+const SALT = 10;
 
 @Injectable()
 export class AuthService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
   async create(SignUpDto: SignUpDto) {
-    const user = new this.userModel(SignUpDto);
+    const hashedPassword = await bcrypt.hash(SignUpDto.password, SALT);
+    const user = new this.userModel({
+      name: SignUpDto.name,
+      email: SignUpDto.email,
+      password: hashedPassword,
+    });
 
     await user.save();
     return user;

@@ -15,8 +15,16 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/sign-up')
-  create(@Body() SignUpDto: SignUpDto) {
-    return this.authService.create(SignUpDto);
+  async create(@Body() SignUpDto: SignUpDto) {
+    const user = await this.authService.create(SignUpDto);
+
+    return {
+      message: 'User created successfully',
+      data: {
+        name: user.name,
+        email: user.email,
+      },
+    };
   }
 
   @Get()
