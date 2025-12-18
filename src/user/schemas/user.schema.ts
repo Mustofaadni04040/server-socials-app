@@ -6,7 +6,7 @@ export type CatDocument = HydratedDocument<User>;
 @Schema()
 export class User {
   @Prop()
-  username: string;
+  email: string;
   @Prop()
   name: string;
   @Prop()
