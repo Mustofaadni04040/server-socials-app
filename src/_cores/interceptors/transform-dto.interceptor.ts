@@ -32,6 +32,12 @@ export class TransformDTOInterceptor<T> implements NestInterceptor {
             accessToken: data.accessToken,
           };
         }
+        return {
+          message: 'Success',
+          data: plainToInstance(this.dtoClass, data, {
+            excludeExtraneousValues: true,
+          }),
+        };
       }),
     );
   }
