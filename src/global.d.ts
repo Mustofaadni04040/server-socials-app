@@ -2,6 +2,7 @@ interface IUserPayload {
   _id: string;
   email: string;
   name: string;
+  role: string;
 }
 
 declare namespace Express {
