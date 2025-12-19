@@ -18,14 +18,20 @@ export function TransformDTO<T>(dto: ClassConstructor<T>) {
 export class TransformDTOInterceptor<T> implements NestInterceptor {
   constructor(private readonly dtoClass: ClassConstructor<T>) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const { path } = context.switchToHttp().getRequest();
+    const isAuthenticationUrl = path.includes('auth');
+
     return next.handle().pipe(
       map((data) => {
-        return {
-          message: 'Success',
-          data: plainToInstance(this.dtoClass, data, {
-            excludeExtraneousValues: true,
-          }),
-        };
+        if (isAuthenticationUrl) {
+          return {
+            message: 'Success',
+            data: plainToInstance(this.dtoClass, data.savedUser, {
+              excludeExtraneousValues: true,
+            }),
+            accessToken: data.accessToken,
+          };
+        }
       }),
     );
   }

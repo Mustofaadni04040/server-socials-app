@@ -4,12 +4,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 const SALT = 10;
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private jwtService: JwtService,
+  ) {}
   async create(SignUpDto: SignUpDto) {
     const hashedPassword = await bcrypt.hash(SignUpDto.password, SALT);
     const user = new this.userModel({
@@ -18,8 +22,17 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    await user.save();
-    return user;
+    const savedUser = await user.save();
+
+    const payload = {
+      _id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload);
+
+    return { savedUser, accessToken };
   }
 
   findAll() {
