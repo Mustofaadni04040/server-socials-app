@@ -26,7 +26,7 @@ export class TransformDTOInterceptor<T> implements NestInterceptor {
         if (isAuthenticationUrl) {
           return {
             message: 'Success',
-            data: plainToInstance(this.dtoClass, data.savedUser, {
+            data: plainToInstance(this.dtoClass, data.user, {
               excludeExtraneousValues: true,
             }),
             accessToken: data.accessToken,
