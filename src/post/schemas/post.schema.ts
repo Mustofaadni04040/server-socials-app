@@ -4,10 +4,12 @@ import type { UserDocument } from 'src/user/schemas/user.schema';
 
 export type PostDocument = HydratedDocument<Post>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Post {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   author: UserDocument;
+  @Prop()
+  backgroundColor: string;
   @Prop()
   content: string;
   @Prop()
