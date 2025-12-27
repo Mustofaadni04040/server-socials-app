@@ -16,14 +16,14 @@ export class PostService {
   async create(createPostDto: CreatePostDto, currentUser: IUserPayload) {
     const newPost = new this.postModel({
       ...createPostDto,
-      author: currentUser,
+      author: currentUser._id,
     });
 
     return newPost.save();
   }
 
   findAll() {
-    return `This action returns all post`;
+    return this.postModel.find().populate('author');
   }
 
   findOne(id: number) {
