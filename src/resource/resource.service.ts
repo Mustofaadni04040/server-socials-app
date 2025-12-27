@@ -25,8 +25,7 @@ export class ResourceService {
         if (!post) {
           throw new NotFoundException('Post not found');
         }
-        // return post?.user._id.toString();
-        return;
+        return post?.author._id.toString();
       }
       default:
         throw new Error('Invalid resource type');

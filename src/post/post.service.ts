@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -26,12 +26,26 @@ export class PostService {
     return this.postModel.find().populate('author');
   }
 
-  findOne(id: string) {
-    return this.postModel.findById(id).populate('author');
+  async findOne(id: string) {
+    const post = await this.postModel.findById(id).populate('author');
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    const post = await this.postModel.findByIdAndUpdate(id, updatePostDto, {
+      new: true,
+    });
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return post;
   }
 
   remove(id: number) {
