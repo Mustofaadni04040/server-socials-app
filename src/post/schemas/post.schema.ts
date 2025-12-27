@@ -6,10 +6,14 @@ export type PostDocument = HydratedDocument<Post>;
 
 @Schema()
 export class Post {
-  @Prop()
-  title: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: UserDocument;
+  author: UserDocument;
+  @Prop()
+  content: string;
+  @Prop()
+  mediaUrls?: string[];
+  @Prop({ enum: ['public', 'private', 'friends'], default: 'public' })
+  privacy: IPrivacy;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
