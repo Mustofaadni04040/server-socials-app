@@ -13,8 +13,11 @@ export class PostService {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  async create(createPostDto: CreatePostDto) {
-    const newPost = new this.postModel(createPostDto);
+  async create(createPostDto: CreatePostDto, currentUser: IUserPayload) {
+    const newPost = new this.postModel({
+      ...createPostDto,
+      author: currentUser,
+    });
 
     return newPost.save();
   }
