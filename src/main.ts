@@ -10,6 +10,7 @@ async function bootstrap() {
     prefix: 'api/v',
     defaultVersion: '1',
   });
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
