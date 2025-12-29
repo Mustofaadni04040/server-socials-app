@@ -21,7 +21,7 @@ export class Post {
   @Prop()
   content: string;
   @Prop({ default: [] })
-  mediaUrls: MediaType[];
+  mediaFiles: MediaType[];
   @Prop({ enum: ['public', 'private', 'friends'], default: 'public' })
   privacy: IPrivacy;
 }
