@@ -1,6 +1,8 @@
 import { IsNumber, IsNotEmpty } from 'class-validator';
 
 export class UploadMediaDto {
+  @IsNotEmpty()
+  public_id: string;
   @IsNumber()
   version: number;
   @IsNotEmpty()

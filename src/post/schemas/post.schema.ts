@@ -5,6 +5,7 @@ import type { UserDocument } from 'src/user/schemas/user.schema';
 export type PostDocument = HydratedDocument<Post>;
 
 export class MediaType {
+  public_id: string;
   version: number;
   display_name: string;
   format: string;
